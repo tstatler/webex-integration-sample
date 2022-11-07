@@ -1,29 +1,14 @@
 # Example of Webex Integration (OAuth flow) in Node.js
 
-This Webex Integration example illustrates an OAuth Grant flow at the end of which the Webex Teams user who granted permission will see his fullname displayed.
+This project is a Webex Integration example that illustrates the OAuth Grant flow to obtain an API access token for the authenticating user. At the end of the process the user's Webex name is displayed. See the accompanying tutorial [Running an OAuth Server Locally](https://developer.webex.com/docs/run-an-oauth-integration).
 
-This code sample comes as a companion to the DevNet learning lab: [Run a Webex Teams Integration locally](https://developer.cisco.com/learning/tracks/collab-cloud/spark-apps/collab-spark-intl/step/1).
+For production purposes, you will register and deploy the integration at a public URL. Please check the guide to [register your own integration](#https://github.com/CiscoDevNet/spark-integration-sample#to-register-your-own-spark-oauth-integration).
 
-![](docs/img/OAuth-Flow-Sumpup.png)
+
 
 
 This example leverages a pre-registered Webex OAuth Integration with a Redirect URL on localhost so that it can be run with minimal setup.
 The flow initiates at http://localhost:8080/, and the provided Webex Application's Oauth Flow redirects to http://localhost:8080/oauth
-
-For production purpose, you will register and deploy the integration on a public URL. Please check the guide to [register your own integration](#https://github.com/CiscoDevNet/spark-integration-sample#to-register-your-own-spark-oauth-integration).
-
-
-## Quick start on Glitch
-
-Click [![Remix on Glitch](https://cdn.glitch.com/2703baf2-b643-4da7-ab91-7ee2a2d00b5b%2Fremix-button.svg)](https://glitch.com/edit/#!/import/github/CiscoDevNet/webex-integration-sample)
-
-Then open the `.env` file and place your OAuth integration settings: CLIENT_ID, CLIENT_SECRET.
-
-Also, place the set of scopes you want your integration to request.
-
-Your integration is all set.
-
-_Note that thanks to Glitch 'PROJECT_DOMAIN' env variable, you do not need to customize the REDIRECT_URI env variable to point to your app domain._
 
 
 

@@ -14,6 +14,8 @@ const debug = require("debug")("oauth");
 const request = require("request");
 const express = require('express');
 const app = express();
+const crypto = require('crypto');
+
 
 // Check for required environment variables
 //
@@ -35,14 +37,30 @@ const redirectURI = process.env.REDIRECT_URI;
 const scopes = process.env.SCOPES || "spark:people_read meeting:schedules_read meeting:people_write"; 
 const port = process.env.PORT || 8080;
 
-debug(`OAuth integration settings:\n   - CLIENT_ID    : ${clientId}\n   - REDIRECT_URI : ${redirectURI}\n   - SCOPES       : ${scopes}`);
+// state can be used for security and/or correlation purposes
+const state = process.env.STATE || crypto.randomBytes(64).toString('hex');
 
-// EJS template configuration
+const initiateURL = "https://webexapis.com/v1/authorize?client_id=C909b987b64167258774e532d595702ef864a35f7614678dbe4046056daf67d63&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Foauth&scope=meeting%3Aschedules_read%20spark%3Akms%20spark%3Apeople_read%20spark%3Apeople_write%20spark%3Arooms_read%20spark%3Arooms_write&state=" + state;
+
 const read = require("fs").readFileSync;
 const join = require("path").join;
+const str = read(join(__dirname, '/www/index.ejs'), 'utf8');
 const ejs = require("ejs");
+const compiled = ejs.compile(str)({ "link": initiateURL }); // inject the link into the template
 
-// Statically serve the "/www" directory.
+app.get("/index.html", function (req, res) {
+   debug("serving the integration home page (generated from an EJS template)");
+   res.send(compiled);
+});
+
+app.get("/", function (req, res) {
+   res.redirect("/index.html");
+});
+
+// -------------------------------------------------------------
+// Statically serve the "/www" directory
+// WARNING: Do not move the 2 lines of code below, as we need this exact precedance order for the static and dynamic HTML generation to work correctly all together
+//          If the section above is commented, the static index.html page will be served instead of the EJS template.
 const path = require('path');
 app.use("/", express.static(path.join(__dirname, 'www')));
 

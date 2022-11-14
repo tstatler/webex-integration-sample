@@ -17,15 +17,11 @@ const debug = require("debug")("oauth");
 const fetch = require("node-fetch");
 const express = require("express");
 var session = require("express-session");
-let RedisStore = require("connect-redis")(session);
 const app = express();
 const crypto = require("crypto");
 
 // Variable session containing API access token
 var ssn;
-
-const Redis = require("ioredis");
-let redisClient = new Redis();
 
 // Enable express to use the session middleware.
 app.use(
